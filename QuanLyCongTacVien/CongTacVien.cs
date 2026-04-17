@@ -36,15 +36,23 @@ namespace QuanLyCongTacVien
 
         public CongTacVien(DataRow row)
         {
-            Oid = row["Oid"] != DBNull.Value ? Convert.ToInt32(row["Oid"]) : -1;
-            MaQuanLy = row["MaQuanLy"]?.ToString();
-            HoTen = row["HoTen"]?.ToString();
-            NgaySinh = Common.ConvertStringToDateTime(row["NgaySinh"].ToString());
-            QuocTich = row["QuocTich"]?.ToString();
-            CCCD = row["CCCD"]?.ToString();
-            DiaChi = row["DiaChi"]?.ToString();
-            SoDienThoai = row["SoDienThoai"]?.ToString();
-            IsActive = (row.Table.Columns.Contains("IsActive") && row["IsActive"] != DBNull.Value) ? Convert.ToBoolean(row["IsActive"]) : true;
+            Oid = (row.Table.Columns.Contains("Oid") && row["Oid"] != DBNull.Value)
+                ? Convert.ToInt32(row["Oid"]) : -1;
+
+            MaQuanLy = row.Table.Columns.Contains("MaQuanLy") ? row["MaQuanLy"]?.ToString() : null;
+            HoTen = row.Table.Columns.Contains("HoTen") ? row["HoTen"]?.ToString() : null;
+
+            // Convert NgaySinh to nullable DateTime in a single expression
+            NgaySinh = (row.Table.Columns.Contains("NgaySinh") && row["NgaySinh"] != DBNull.Value)
+                ? (DateTime?)Convert.ToDateTime(row["NgaySinh"]) : null;
+
+            QuocTich = row.Table.Columns.Contains("QuocTich") ? row["QuocTich"]?.ToString() : null;
+            CCCD = row.Table.Columns.Contains("CCCD") ? row["CCCD"]?.ToString() : null;
+            DiaChi = row.Table.Columns.Contains("DiaChi") ? row["DiaChi"]?.ToString() : null;
+            SoDienThoai = row.Table.Columns.Contains("SoDienThoai") ? row["SoDienThoai"]?.ToString() : null;
+
+            IsActive = (row.Table.Columns.Contains("IsActive") && row["IsActive"] != DBNull.Value)
+                ? Convert.ToBoolean(row["IsActive"]) : true;
         }
         public override string ToString()
         {

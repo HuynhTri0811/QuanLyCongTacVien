@@ -28,6 +28,8 @@ namespace QuanLyCongTacVien
                     {
                         dt.Load(reader);
                     }
+
+        
                 }
                 catch (Exception ex)
                 {
@@ -38,6 +40,24 @@ namespace QuanLyCongTacVien
             return dt;
         }
 
+
+        public static void XoaCongTacVienByOid(int oid)
+        {
+            if (oid <= 0) return;
+            string connectionString = $"Data Source={dbPath}";
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new SqliteCommand("DELETE FROM CongTacVien WHERE Oid = @Oid", connection))
+                {
+                    var p = command.CreateParameter();
+                    p.ParameterName = "@Oid";
+                    p.Value = oid;
+                    command.Parameters.Add(p);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
         public static void ThemMoiDanhSachCongTacVien(IEnumerable<CongTacVien> list)
         {
             if (list == null) return;
@@ -103,7 +123,7 @@ namespace QuanLyCongTacVien
                         {
                             pMaQuanLy.Value = item.MaQuanLy ?? string.Empty;
                             pHoTen.Value = item.HoTen ?? string.Empty;
-                            pNgaySinh.Value = item.NgaySinh?.ToString("yyyy-MM-dd") ?? string.Empty;
+                            pNgaySinh.Value = item.NgaySinh.HasValue ? (object)item.NgaySinh.Value : DBNull.Value;
                             pQuocTich.Value = item.QuocTich ?? string.Empty;
                             pCCCD.Value = item.CCCD ?? string.Empty;
                             pDiaChi.Value = item.DiaChi ?? string.Empty;
