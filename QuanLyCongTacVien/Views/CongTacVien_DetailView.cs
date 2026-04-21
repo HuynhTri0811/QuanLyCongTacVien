@@ -1,8 +1,9 @@
-﻿using System;
+﻿using QuanLyCongTacVien.DTO;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace QuanLyCongTacVien
+namespace QuanLyCongTacVien.Views
 {
     internal class CongTacVien_DetailView : Form
     {

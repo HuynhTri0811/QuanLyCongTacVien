@@ -1,12 +1,12 @@
 using System;
 using System.Data;
 
-namespace QuanLyCongTacVien
+namespace QuanLyCongTacVien.DTO
 {
     public class CongTacVien
     {
 
-        private int Oid { get; set; }
+        public int Oid { get; set; }
         public string MaQuanLy { get; set; }
         public string HoTen { get; set; }
         public DateTime? NgaySinh { get; set; }
@@ -42,7 +42,6 @@ namespace QuanLyCongTacVien
             MaQuanLy = row.Table.Columns.Contains("MaQuanLy") ? row["MaQuanLy"]?.ToString() : null;
             HoTen = row.Table.Columns.Contains("HoTen") ? row["HoTen"]?.ToString() : null;
 
-            // Convert NgaySinh to nullable DateTime in a single expression
             NgaySinh = (row.Table.Columns.Contains("NgaySinh") && row["NgaySinh"] != DBNull.Value)
                 ? (DateTime?)Convert.ToDateTime(row["NgaySinh"]) : null;
 

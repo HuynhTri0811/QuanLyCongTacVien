@@ -10,7 +10,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colOid;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaQuanLy;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHoTen;
-        private DataGridViewDateTimePickerColumn colNgaySinh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNgaySinh;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSoDienThoai;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDiaChi;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCCCD;
@@ -73,7 +73,7 @@
             // initialize columns
             colMaQuanLy = new DataGridViewTextBoxColumn();
             colHoTen = new DataGridViewTextBoxColumn();
-            colNgaySinh = new DataGridViewDateTimePickerColumn();
+            colNgaySinh = new DataGridViewTextBoxColumn();
             colSoDienThoai = new DataGridViewTextBoxColumn();
             colDiaChi = new DataGridViewTextBoxColumn();
             colCCCD = new DataGridViewTextBoxColumn();

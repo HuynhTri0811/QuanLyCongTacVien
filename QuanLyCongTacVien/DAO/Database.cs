@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using QuanLyCongTacVien.DTO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,11 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyCongTacVien
+namespace QuanLyCongTacVien.DAO
 {
     public static class Database
     {
         static string dbPath = @"E:\QuanLyCongTacVien\Database\CTV_Data.db";
+        public static string DbPath => dbPath;
 
         public static DataTable GetAllDanhSachCongTacVien()
         {
@@ -143,6 +145,15 @@ namespace QuanLyCongTacVien
 
         public static void KhoiTaoSQL()
         {
+            // Ensure directory exists for DB file
+            try
+            {
+                var dir = System.IO.Path.GetDirectoryName(dbPath);
+                if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
+                    System.IO.Directory.CreateDirectory(dir);
+            }
+            catch { /* ignore directory creation errors here */ }
+
             string connectionString = $"Data Source={dbPath}";
 
             using (var connection = new SqliteConnection(connectionString))
@@ -156,7 +167,10 @@ namespace QuanLyCongTacVien
                         Oid INTEGER PRIMARY KEY AUTOINCREMENT,
                         MaQuanLy TEXT UNIQUE,
                         HoTen TEXT,
+                        NgaySinh DATETIME,
                         QuocTich TEXT,
+                        CCCD TEXT,
+                        DiaChi TEXT,
                         SoDienThoai TEXT,
                         NgayVaoLam DATETIME,
                         IsActive INTEGER DEFAULT 1
@@ -173,6 +187,21 @@ namespace QuanLyCongTacVien
                     Console.WriteLine("Lỗi kết nối: " + ex.Message);
                 }
             }
+
+#if NET8_0
+            // If EF Core is available, ensure EF migrations / model are applied as well
+            try
+            {
+                using (var ctx = new AppDbContext())
+                {
+                    ctx.Database.EnsureCreated();
+                }
+            }
+            catch
+            {
+                // ignore if EF isn't available at runtime
+            }
+#endif
         }
 
         internal static void CapNhatDanhSachCongTacVien(List<CongTacVien> listCapNhat)

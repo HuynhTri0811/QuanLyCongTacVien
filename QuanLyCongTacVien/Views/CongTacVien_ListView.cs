@@ -1,4 +1,7 @@
-﻿using System;
+﻿using QuanLyCongTacVien.DAO;
+using QuanLyCongTacVien.DTO;
+using System;
+using QuanLyCongTacVien.Views;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +21,8 @@ namespace QuanLyCongTacVien
         public CongTacVien_ListView()
         {
             InitializeComponent();
+            Database.KhoiTaoSQL();
+
             ListCongTacVien();
         }
 
@@ -62,8 +67,6 @@ namespace QuanLyCongTacVien
         {
             _listCongTacVien = GetAllDanhSachCongTacVien();
             dataGridView1.DataSource = new BindingList<CongTacVien>(_listCongTacVien);
-
-            // Ensure action/delete buttons are placed at the end
 
 
         }

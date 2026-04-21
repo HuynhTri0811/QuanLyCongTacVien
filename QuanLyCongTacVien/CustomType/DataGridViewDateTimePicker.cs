@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel;
 
-namespace QuanLyCongTacVien
+namespace QuanLyCongTacVien.CustomType
 {
     // Editing control
     public class DataGridViewDateTimePickerEditingControl : DateTimePicker, IDataGridViewEditingControl

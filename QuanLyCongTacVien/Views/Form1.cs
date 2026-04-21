@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
 using System.Data;
 using System.Collections.Generic;
+using QuanLyCongTacVien.DTO;
 
 namespace QuanLyCongTacVien
 {
