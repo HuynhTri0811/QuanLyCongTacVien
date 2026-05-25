@@ -9,17 +9,21 @@ using Microsoft.EntityFrameworkCore;
 namespace QuanLyCongTacVien.DAO
 {
     public class AppDbContext : DbContext
-    {        
-        
-        
-        string _dbPath = @"E:\QuanLyCongTacVien\Database\CTV_Data.db";
-        public DbSet<DTO.CongTacVien> CongTacViens { get; set; }
-        public DbSet<DTO.QuanLyHopDongCongTacVien> QuanLyHopDongCongTacViens { get; set; }
-
+    {
+        private readonly string _dbPath;
 
         public AppDbContext()
         {
+            _dbPath = @"E:\QuanLyCongTacVien\Database\CTV_Data.db";
         }
+
+        public AppDbContext(string dbPath)
+        {
+            _dbPath = dbPath;
+        }
+
+        public DbSet<DTO.CongTacVien> CongTacViens { get; set; }
+        public DbSet<DTO.QuanLyHopDongCongTacVien> HopDongs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

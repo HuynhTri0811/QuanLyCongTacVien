@@ -10,7 +10,7 @@ namespace QuanLyCongTacVien.DTO
     {
         public int Oid { get; set; }
         public string MaQuanLy { get; set; }
-        public string SoHopDong { get; set; }
+        public DateTime Ngay { get; set; }
         public DateTime? NgayKy { get; set; }
 
         public int GetOid() { return Oid; }
