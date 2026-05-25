@@ -1,0 +1,81 @@
+<Window x:Class="QuanLyCongTacVien.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuanLyCongTacVien"
+        mc:Ignorable="d"
+        Title="Quản lý Cộng tác viên" Height="600" Width="1000" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" MinWidth="150"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Navigation Menu -->
+        <Border Grid.Column="0" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="0,0,1,0">
+            <TreeView Margin="5" BorderThickness="0" Background="Transparent" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeViewItem Header="Quản lý cộng tác viên" IsExpanded="True" FontWeight="Bold">
+                    <TreeViewItem x:Name="tviHopDong" Header="Hợp đồng cộng tác viên" FontWeight="Normal" Margin="0,2"/>
+                    <TreeViewItem x:Name="tviCongTacVien" Header="Cộng tác viên(New)" FontWeight="Normal" IsSelected="True" Margin="0,2"/>
+                    <TreeViewItem Header="Hồ sơ tính lương ( Cộng tác viên)" FontWeight="Normal" Margin="0,2"/>
+                </TreeViewItem>
+            </TreeView>
+        </Border>
+
+        <!-- Splitter -->
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent"/>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="2" Margin="10">
+            
+            <!-- View 1: Cong Tac Vien -->
+            <Grid x:Name="gridCongTacVien" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="Tải Dữ Liệu" Width="100" Height="30" Margin="0,0,10,0" Click="BtnLoadData_Click"/>
+                    <Button Content="Thêm mới" Width="100" Height="30" Margin="0,0,10,0" Click="BtnAddNew_Click"/>
+                    <Button Content="Xóa" Width="100" Height="30" Margin="0,0,10,0" Click="BtnDelete_Click"/>
+                    <Button Content="Xuất Excel" Width="100" Height="30" Click="BtnExportCTV_Click"/>
+                </StackPanel>
+
+                <DataGrid Grid.Row="1" x:Name="dgCongTacVien" AutoGenerateColumns="True" IsReadOnly="True" 
+                          SelectionMode="Single" MouseDoubleClick="dgCongTacVien_MouseDoubleClick" 
+                          AutoGeneratingColumn="dgCongTacVien_AutoGeneratingColumn" />
+            </Grid>
+
+            <!-- View 2: Hop Dong -->
+            <Grid x:Name="gridHopDong" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Danh sách Hợp đồng cộng tác viên" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="Tải Dữ Liệu" Width="100" Height="30" Margin="0,0,10,0" Click="BtnLoadHopDong_Click"/>
+                    <Button Content="Thêm mới" Width="100" Height="30" Margin="0,0,10,0" Click="BtnAddHopDong_Click"/>
+                    <Button Content="Xóa" Width="100" Height="30" Margin="0,0,10,0" Click="BtnDeleteHopDong_Click"/>
+                    <Button Content="Xuất Excel" Width="100" Height="30" Click="BtnExportHopDong_Click"/>
+                </StackPanel>
+
+                <DataGrid Grid.Row="2" x:Name="dgHopDong" AutoGenerateColumns="False" IsReadOnly="True" 
+                          MouseDoubleClick="dgHopDong_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Niên độ tài chính" Binding="{Binding NienDoTaiChinh}" Width="*"/>
+                        <DataGridTextColumn Header="Năm học" Binding="{Binding NamHoc}" Width="*"/>
+                        <DataGridTextColumn Header="Trường/Công ty" Binding="{Binding TruongCongTy}" Width="*"/>
+                        <DataGridTextColumn Header="Số thứ tự" Binding="{Binding STT}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

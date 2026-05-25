@@ -1,0 +1,179 @@
+<Window x:Class="QuanLyCongTacVien.DetailViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Chi tiết Cộng tác viên" Height="600" Width="1000" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" Margin="5">
+            <!-- Sơ yếu lý lịch -->
+            <TabItem Header="Sơ yếu lý lịch">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <WrapPanel Margin="10">
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Mã nhân sự:"/>
+                            <TextBox Text="{Binding MaNhanSu, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Mã nhân viên:"/>
+                            <TextBox Text="{Binding MaNhanVien, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Họ:*"/>
+                            <TextBox Text="{Binding Ho, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Tên:*"/>
+                            <TextBox Text="{Binding Ten, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Họ và tên:"/>
+                            <TextBox Text="{Binding HoVaTen, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Ngày sinh:"/>
+                            <DatePicker SelectedDate="{Binding NgaySinh, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Giới tính:"/>
+                            <ComboBox Text="{Binding GioiTinh, Mode=TwoWay}" IsEditable="True">
+                                <ComboBoxItem Content="Nam"/>
+                                <ComboBoxItem Content="Nữ"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Số CMND:*"/>
+                            <TextBox Text="{Binding SoCMND, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Ngày cấp:*"/>
+                            <DatePicker SelectedDate="{Binding NgayCap, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Nơi cấp:*"/>
+                            <TextBox Text="{Binding NoiCap, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Quốc tịch:*"/>
+                            <TextBox Text="{Binding QuocTich, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Dân tộc:"/>
+                            <TextBox Text="{Binding DanToc, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Email cá nhân:"/>
+                            <TextBox Text="{Binding EmailCaNhan, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Điện thoại di động:"/>
+                            <TextBox Text="{Binding DienThoaiDiDong, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Ngày vào Trường:*"/>
+                            <DatePicker SelectedDate="{Binding NgayVaoTruong, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Đơn vị:*"/>
+                            <TextBox Text="{Binding DonVi, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Tình trạng:*"/>
+                            <TextBox Text="{Binding TinhTrang, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="920">
+                            <TextBlock Text="Ghi chú:"/>
+                            <TextBox Text="{Binding GhiChu, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" Height="60"/>
+                        </StackPanel>
+                    </WrapPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Trình độ chuyên môn -->
+            <TabItem Header="Trình độ chuyên môn">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <WrapPanel Margin="10">
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Học hàm:"/>
+                            <TextBox Text="{Binding HocHam, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Học vị:"/>
+                            <TextBox Text="{Binding HocVi, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Chuyên ngành đào tạo:"/>
+                            <TextBox Text="{Binding ChuyenNganhDaoTao, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Trường đào tạo:"/>
+                            <TextBox Text="{Binding TruongDaoTao, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Ngày cấp bằng:"/>
+                            <DatePicker SelectedDate="{Binding NgayCapBang, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Năm tốt nghiệp:"/>
+                            <TextBox Text="{Binding NamTotNghiep, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Trình độ văn hóa:*"/>
+                            <TextBox Text="{Binding TrinhDoVanHoa, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Trình độ tin học:"/>
+                            <TextBox Text="{Binding TrinhDoTinHoc, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Margin="5" Width="300">
+                            <TextBlock Text="Ngoại ngữ chính:"/>
+                            <TextBox Text="{Binding NgoaiNguChinh, Mode=TwoWay}" />
+                        </StackPanel>
+                    </WrapPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Thông tin lương -->
+            <TabItem Header="Thông tin lương">
+                <WrapPanel Margin="10">
+                    <StackPanel Margin="5" Width="450">
+                        <TextBlock Text="Mã số thuế:"/>
+                        <TextBox Text="{Binding MaSoThue, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="5" Width="450">
+                        <TextBlock Text="% tính thuế:"/>
+                        <TextBox Text="{Binding PhanTramTinhThue, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="5" Width="450">
+                        <TextBlock Text="Cơ quan thuế:"/>
+                        <TextBox Text="{Binding CoQuanThue, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="5" Width="450">
+                        <TextBlock Text="Tên Ngân Hàng:"/>
+                        <TextBox Text="{Binding TenNganHang, Mode=TwoWay}" />
+                    </StackPanel>                    
+                    <StackPanel Margin="5" Width="450">
+                        <TextBlock Text="Số tài khoản ngân hàng:"/>
+                        <TextBox Text="{Binding SoTaiKhoan, Mode=TwoWay}" />
+                    </StackPanel>
+                </WrapPanel>
+            </TabItem>
+            
+            <TabItem Header="Hợp đồng Cộng tác viên">
+                <TextBlock Text="Tab Hợp đồng (Đang phát triển)" Margin="20"/>
+            </TabItem>
+            
+            <TabItem Header="Số hóa giấy tờ">
+                <TextBlock Text="Tab Số hóa (Đang phát triển)" Margin="20"/>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Lưu" Width="100" Height="30" Margin="0,0,10,0" Click="BtnSave_Click"/>
+            <Button Content="Đóng" Width="100" Height="30" Click="BtnClose_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
