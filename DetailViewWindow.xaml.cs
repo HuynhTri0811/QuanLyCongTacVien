@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using QuanLyCongTacVien.Models;
 
 namespace QuanLyCongTacVien
@@ -14,6 +16,23 @@ namespace QuanLyCongTacVien
             
             // Set DataContext to bind UI to the model
             this.DataContext = _congTacVien;
+
+            LoadHopDongs();
+        }
+
+        private void LoadHopDongs()
+        {
+            if (_congTacVien.Id != 0)
+            {
+                using (var context = new Data.AppDbContext())
+                {
+                    var details = context.ChiTietHopDongs
+                        .Include(d => d.CongTacVien)
+                        .Where(d => d.CongTacVienId == _congTacVien.Id && !d.IsDelete && d.QuanLyHopDong != null && !d.QuanLyHopDong.IsDelete)
+                        .ToList();
+                    dgChiTietHopDong.ItemsSource = details;
+                }
+            }
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)

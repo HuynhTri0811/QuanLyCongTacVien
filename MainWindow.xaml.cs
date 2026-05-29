@@ -63,6 +63,7 @@ public partial class MainWindow : Window
                 .Where(c => !c.IsDelete)
                 .ToList();
         }
+        UpdateStatistics();
     }
 
     private void BtnAddNew_Click(object sender, RoutedEventArgs e)
@@ -101,6 +102,19 @@ public partial class MainWindow : Window
     {
         if (dgCongTacVien.SelectedItem is Models.CongTacVien selected)
         {
+            using (var context = new Data.AppDbContext())
+            {
+                bool existsInContract = context.ChiTietHopDongs
+                    .Any(d => d.CongTacVienId == selected.Id && !d.IsDelete && d.QuanLyHopDong != null && !d.QuanLyHopDong.IsDelete);
+
+                if (existsInContract)
+                {
+                    MessageBox.Show("Cộng tác viên này đã tồn tại trong quản lý hợp đồng cộng tác viên, không thể xóa!", 
+                        "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa '{selected.HoVaTen}' không?", 
                 "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Question);
             
@@ -123,31 +137,68 @@ public partial class MainWindow : Window
         }
     }
 
-    private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    private void lstNavigation_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.NewValue is TreeViewItem item)
+        if (lstNavigation.SelectedItem is ListBoxItem item)
         {
-            string header = item.Header.ToString();
-            
             // Tránh lỗi NullReferenceException khi UI đang khởi tạo
             if (gridCongTacVien == null || gridHopDong == null) return;
 
-            if (header == "Cộng tác viên(New)")
+            if (item == lbiCongTacVien)
             {
                 gridCongTacVien.Visibility = Visibility.Visible;
                 gridHopDong.Visibility = Visibility.Collapsed;
                 LoadDuLieu();
             }
-            else if (header == "Hợp đồng cộng tác viên")
+            else if (item == lbiHopDong)
             {
                 gridCongTacVien.Visibility = Visibility.Collapsed;
                 gridHopDong.Visibility = Visibility.Visible;
                 LoadHopDong();
             }
-            else if (header != "Quản lý cộng tác viên")
+            else if (item == lbiTinhLuong)
             {
-                MessageBox.Show($"Chức năng '{header}' đang được cập nhật!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Chức năng 'Hồ sơ tính lương (Cộng tác viên)' đang được cập nhật!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+    }
+
+    private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string searchText = txtSearch.Text.ToLower().Trim();
+        using (var context = new Data.AppDbContext())
+        {
+            var query = context.CongTacViens.Where(c => !c.IsDelete);
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(c => 
+                    (c.HoVaTen != null && c.HoVaTen.ToLower().Contains(searchText)) ||
+                    (c.MaNhanSu != null && c.MaNhanSu.ToLower().Contains(searchText)) ||
+                    (c.MaNhanVien != null && c.MaNhanVien.ToLower().Contains(searchText)) ||
+                    (c.TenGoiKhac != null && c.TenGoiKhac.ToLower().Contains(searchText)) ||
+                    (c.NoiSinh != null && c.NoiSinh.ToLower().Contains(searchText))
+                );
+            }
+            dgCongTacVien.ItemsSource = query.ToList();
+        }
+    }
+
+    private void UpdateStatistics()
+    {
+        // Tránh lỗi NullReferenceException khi UI đang khởi tạo
+        if (txtStatTotal == null || txtStatActive == null || txtStatNew == null) return;
+
+        using (var context = new Data.AppDbContext())
+        {
+            int total = context.CongTacViens.Count(c => !c.IsDelete);
+            int active = context.CongTacViens.Count(c => !c.IsDelete && c.TinhTrang == "Đang làm việc");
+            
+            var now = DateTime.Now;
+            int newThisMonth = context.CongTacViens.Count(c => !c.IsDelete && c.NgayVaoTruong.Month == now.Month && c.NgayVaoTruong.Year == now.Year);
+
+            txtStatTotal.Text = $" {total}";
+            txtStatActive.Text = $" {active}";
+            txtStatNew.Text = $" {newThisMonth}";
         }
     }
 
@@ -224,6 +275,19 @@ public partial class MainWindow : Window
     {
         if (dgHopDong.SelectedItem is Models.QuanLyHopDongCongTacVien selected)
         {
+            using (var context = new Data.AppDbContext())
+            {
+                bool hasDetails = context.ChiTietHopDongs
+                    .Any(d => d.QuanLyHopDongCongTacVienId == selected.Id && !d.IsDelete);
+
+                if (hasDetails)
+                {
+                    MessageBox.Show("Đợt quản lý hợp đồng này vẫn còn chi tiết hợp đồng bên trong, không thể xóa!", 
+                        "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
             var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa hợp đồng niên độ '{selected.NienDoTaiChinh}' không?", 
                 "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Question);
             

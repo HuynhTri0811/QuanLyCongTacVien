@@ -2,6 +2,209 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Quản lý hợp đồng" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <!-- Reusable Modern Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Filled Blue Button (Add New) -->
+        <Style x:Key="AddButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#0F62AC"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Outlined Blue Button (Cancel / Secondary) -->
+        <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#0F62AC"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Foreground" Value="#0F62AC"/>
+        </Style>
+
+        <!-- Filled Red Button (Delete) -->
+        <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#C92A2A"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Filled Green Button (Export Excel) -->
+        <Style x:Key="ExcelButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#2B8A3E"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Modern Toolbar Button Style -->
+        <Style x:Key="ToolbarButton" TargetType="Button">
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#DFECEE"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#CBE0E2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern DataGridRow Style with Left Selection Indicator -->
+        <Style x:Key="ModernDataGridRow" TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E6ED"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridRow">
+                        <Border x:Name="DGR_Border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Left Indicator Bar -->
+                                <Border x:Name="Indicator" Grid.Column="0" Width="4" Background="Transparent" CornerRadius="0"/>
+                                
+                                <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}" 
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="DGR_Border" Property="Background" Value="#F8FAFC"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="DGR_Border" Property="Background" Value="#F1F5F9"/>
+                                <Setter TargetName="Indicator" Property="Background" Value="#0F62AC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern DataGridColumnHeader Style -->
+        <Style x:Key="ModernDataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#EBF1F5"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,10"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridColumnHeader">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                               VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styled TextBox with slightly round corners -->
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="6,0" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern DataGridCell Style (Vertically Centered) -->
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Foreground" Value="#2A2A2A"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Padding="10,0" SnapsToDevicePixels="True">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="#000000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Toolbar -->
@@ -10,54 +213,70 @@
         </Grid.RowDefinitions>
 
         <!-- Ribbon-like Toolbar -->
-        <Border Grid.Row="0" Background="#F0F5FF" BorderBrush="#CCCCCC" BorderThickness="0,0,0,1" Padding="5">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Margin="5,0">
-                    <Button x:Name="btnSave" Width="50" Height="50" Click="BtnSave_Click">
-                        <StackPanel>
-                            <TextBlock Text="💾" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Lưu" FontSize="10" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <TextBlock Text="Save" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-                
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="5,0"/>
+        <Border Grid.Row="0" Background="#F4F8FA" BorderBrush="#E4EDF0" BorderThickness="0,0,0,1" Padding="10,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <StackPanel Margin="5,0">
-                    <Button Width="50" Height="50">
+                <!-- StackPanel (Left Column) -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <!-- Lưu -->
+                    <Button x:Name="btnSave" Style="{StaticResource ToolbarButton}" Click="BtnSave_Click">
                         <StackPanel>
-                            <TextBlock Text="✅" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Hợp lệ" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="💾" FontSize="18" HorizontalAlignment="Center" Margin="0,2"/>
+                            <TextBlock Text="Lưu" FontSize="11" HorizontalAlignment="Center" Foreground="#2A3B4C" FontWeight="SemiBold"/>
                         </StackPanel>
                     </Button>
-                    <TextBlock Text="Edit" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
+                    
+                    <!-- Separator -->
+                    <Border Width="1" Background="#D0DFE5" Margin="5,6" VerticalAlignment="Stretch"/>
+                    
+                    <!-- Hợp lệ -->
+                    <Button Style="{StaticResource ToolbarButton}">
+                        <StackPanel>
+                            <TextBlock Text="✔️" FontSize="18" HorizontalAlignment="Center" Margin="0,2"/>
+                            <TextBlock Text="Hợp lệ" FontSize="11" HorizontalAlignment="Center" Foreground="#2A3B4C" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <!-- Separator -->
+                    <Border Width="1" Background="#D0DFE5" Margin="5,6" VerticalAlignment="Stretch"/>
+                    
+                    <!-- Đóng -->
+                    <Button x:Name="btnClose" Style="{StaticResource ToolbarButton}" Click="BtnClose_Click">
+                        <StackPanel>
+                            <TextBlock Text="✕" FontSize="18" HorizontalAlignment="Center" Margin="0,2" Foreground="#C92A2A" FontWeight="Bold"/>
+                            <TextBlock Text="Đóng" FontSize="11" HorizontalAlignment="Center" Foreground="#2A3B4C" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <!-- Separator -->
+                    <Border Width="1" Background="#D0DFE5" Margin="5,6" VerticalAlignment="Stretch"/>
+                    
+                    <!-- Sao chép -->
+                    <Button x:Name="btnCopy" Style="{StaticResource ToolbarButton}" Click="BtnCopyOldContracts_Click">
+                        <StackPanel>
+                            <TextBlock Text="📋" FontSize="18" HorizontalAlignment="Center" Margin="0,2"/>
+                            <TextBlock Text="Sao chép" FontSize="11" HorizontalAlignment="Center" Foreground="#2A3B4C" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
-                <StackPanel Margin="5,0">
-                    <Button x:Name="btnClose" Width="50" Height="50" Click="BtnClose_Click">
-                        <StackPanel>
-                            <TextBlock Text="❌" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Đóng" FontSize="10" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <TextBlock Text="Close" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-
-                <StackPanel Margin="5,0">
-                    <Button x:Name="btnCopy" Width="50" Height="50" Click="BtnCopyOldContracts_Click">
-                        <StackPanel>
-                            <TextBlock Text="📋" FontSize="20" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Sao chép" FontSize="10" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <TextBlock Text="Copy" FontSize="10" HorizontalAlignment="Center" Foreground="Gray"/>
-                </StackPanel>
-            </StackPanel>
+                <!-- Statistics Counter (Right Column) -->
+                <Border Grid.Column="1" Background="#FFFFFF" BorderBrush="#E4EDF0" BorderThickness="1" CornerRadius="8" Padding="12,6" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="📄" FontSize="14" Foreground="#555555" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="TỔNG SỐ HỢP ĐỒNG:" FontSize="11" FontWeight="Bold" Foreground="#666666" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="txtTotalContracts" Text=" 0" FontSize="12" FontWeight="Bold" Foreground="#0F62AC" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Border>
 
         <!-- Header Information -->
-        <Border Grid.Row="1" Background="#E1E9F7" Padding="10" BorderBrush="#CCCCCC" BorderThickness="0,0,0,1">
+        <Border Grid.Row="1" Background="#F4F8FA" Padding="15,10" BorderBrush="#E4EDF0" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -71,45 +290,49 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Trường/Công ty:*" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TruongCongTy, Mode=TwoWay}" Margin="5" Height="28"/>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Trường/Công ty:*" VerticalAlignment="Center" Margin="5"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding TruongCongTy, Mode=TwoWay}" Margin="5"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Năm học:*" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NamHoc, Mode=TwoWay}" Margin="5" Height="28"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Năm học:*" VerticalAlignment="Center" Margin="5"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NamHoc, Mode=TwoWay}" Margin="5"/>
-
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="Niên độ tài chính:*" VerticalAlignment="Center" Margin="5"/>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding NienDoTaiChinh, Mode=TwoWay}" Margin="5"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Số thứ tự:" VerticalAlignment="Center" Margin="5"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding STT, Mode=TwoWay}" Margin="5"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="Niên độ tài chính:*" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding NienDoTaiChinh, Mode=TwoWay}" Margin="5" Height="28"/>
+                
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Số thứ tự:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding STT, Mode=TwoWay}" Margin="5" Height="28"/>
             </Grid>
         </Border>
 
         <!-- DataGrid for Details -->
-        <GroupBox Grid.Row="2" Header="Danh sách hợp đồng" Margin="5">
-            <Grid>
+        <GroupBox Grid.Row="2" Header="Danh sách chi tiết hợp đồng" Margin="10,15,10,10" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
-                    <Button Content="Thêm dòng" Width="100" Height="25" Margin="0,0,5,0" Click="BtnAddRow_Click"/>
-                    <Button Content="Xóa dòng" Width="100" Height="25" Margin="0,0,5,0" Click="BtnDeleteRow_Click"/>
-                    <Button Content="Xuất Excel" Width="100" Height="25" Click="BtnExportDetails_Click"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                    <Button Content="+ Thêm dòng" Style="{StaticResource AddButtonStyle}" Width="120" Margin="0,0,10,0" Click="BtnAddRow_Click"/>
+                    <Button Content="🗑️ Xóa dòng" Style="{StaticResource DeleteButtonStyle}" Width="110" Margin="0,0,10,0" Click="BtnDeleteRow_Click"/>
+                    <Button Content="📊 Xuất Excel" Style="{StaticResource ExcelButtonStyle}" Width="120" Click="BtnExportDetails_Click"/>
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="dgChiTiet" AutoGenerateColumns="False" CanUserAddRows="False"
-                          MouseDoubleClick="dgChiTiet_MouseDoubleClick">
+                          MouseDoubleClick="dgChiTiet_MouseDoubleClick"
+                          RowStyle="{StaticResource ModernDataGridRow}"
+                          ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                          BorderThickness="1" BorderBrush="#EBF1F5" RowHeaderWidth="0" GridLinesVisibility="Horizontal" 
+                          HorizontalGridLinesBrush="#E8ECEF" Background="White">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Số hợp đồng" Binding="{Binding SoHopDong}" Width="150"/>
                         <DataGridTextColumn Header="Ngày ký" Binding="{Binding NgayKy, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
                         <DataGridTextColumn Header="Bộ phận" Binding="{Binding BoPhan}" Width="150"/>
                         <DataGridTextColumn Header="Người lao động" Binding="{Binding NguoiLaoDong, Mode=OneWay}" IsReadOnly="True" Width="150"/>
-                        <DataGridTextColumn Header="Mã nhân sự" Binding="{Binding MaNhanSu}" Width="80"/>
-                        <DataGridCheckBoxColumn Header="Hết hiệu lực" Binding="{Binding HetHieuLuc}" Width="80"/>
+                        <DataGridTextColumn Header="Mã nhân sự" Binding="{Binding MaNhanSu}" Width="90"/>
+                        <DataGridCheckBoxColumn Header="Hết hiệu lực" Binding="{Binding HetHieuLuc}" Width="90"/>
                         <DataGridTextColumn Header="Chức danh" Binding="{Binding ChucDanh}" Width="120"/>
-                        <DataGridCheckBoxColumn Header="In lại thỏa thuận" Binding="{Binding InLaiThoaThuan}" Width="100"/>
+                        <DataGridCheckBoxColumn Header="In lại thỏa thuận" Binding="{Binding InLaiThoaThuan}" Width="110"/>
                         <DataGridTextColumn Header="Từ ngày" Binding="{Binding TuNgay, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
                         <DataGridTextColumn Header="Đến ngày" Binding="{Binding DenNgay, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
                     </DataGrid.Columns>

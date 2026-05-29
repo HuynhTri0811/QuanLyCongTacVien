@@ -1,7 +1,96 @@
 <Window x:Class="QuanLyCongTacVien.ContractItemDetailWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Chi tiết nhân sự hợp đồng" Height="500" Width="600" WindowStartupLocation="CenterOwner">
+        Title="Chi tiết nhân sự hợp đồng" Height="520" Width="600" WindowStartupLocation="CenterOwner" Background="#FFFFFF">
+    <Window.Resources>
+        <!-- Reusable Modern Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.75"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Filled Blue Button (Word) -->
+        <Style x:Key="WordButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#2980B9"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Filled Green Button (Save) -->
+        <Style x:Key="SaveButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#2ECC71"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Filled Grey Button (Close) -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#475569"/>
+        </Style>
+
+        <!-- Styled TextBox with slightly round corners -->
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="6,0" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styled ComboBox and DatePicker height -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -30,16 +119,16 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Số hợp đồng:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Số hợp đồng:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Item.SoHopDong}" Margin="5"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Ngày ký:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Ngày ký:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Item.NgayKy}" Margin="5"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Bộ phận:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Bộ phận:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Item.BoPhan}" Margin="5"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Người lao động:*" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Người lao động:*" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <ComboBox Grid.Row="3" Grid.Column="1" 
                               ItemsSource="{Binding DanhSachCongTacVien}" 
                               SelectedValue="{Binding Item.CongTacVienId}"
@@ -47,28 +136,28 @@
                               DisplayMemberPath="HoVaTen"
                               Margin="5"/>
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Mã nhân sự:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Mã nhân sự:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Item.MaNhanSu}" Margin="5"/>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Chức danh:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Chức danh:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Item.ChucDanh}" Margin="5"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Từ ngày:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Từ ngày:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <DatePicker Grid.Row="6" Grid.Column="1" SelectedDate="{Binding Item.TuNgay}" Margin="5"/>
 
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Đến ngày:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Đến ngày:" FontWeight="SemiBold" Foreground="#4A5568" VerticalAlignment="Center" Margin="5"/>
                     <DatePicker Grid.Row="7" Grid.Column="1" SelectedDate="{Binding Item.DenNgay}" Margin="5"/>
 
-                    <CheckBox Grid.Row="8" Grid.Column="1" Content="Hết hiệu lực" IsChecked="{Binding Item.HetHieuLuc}" Margin="5,10"/>
-                    <CheckBox Grid.Row="9" Grid.Column="1" Content="In lại thỏa thuận" IsChecked="{Binding Item.InLaiThoaThuan}" Margin="5,10"/>
+                    <CheckBox Grid.Row="8" Grid.Column="1" Content="Hết hiệu lực" IsChecked="{Binding Item.HetHieuLuc}" Margin="5,10" FontWeight="SemiBold" Foreground="#4A5568" FontSize="13"/>
+                    <CheckBox Grid.Row="9" Grid.Column="1" Content="In lại thỏa thuận" IsChecked="{Binding Item.InLaiThoaThuan}" Margin="5,10" FontWeight="SemiBold" Foreground="#4A5568" FontSize="13"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Xuất Word" Width="100" Height="30" Margin="0,0,10,0" Click="BtnExportWord_Click" Background="#2980B9" Foreground="White" BorderThickness="0"/>
-            <Button Content="Lưu" Width="100" Height="30" Margin="0,0,10,0" Click="BtnSave_Click" Background="#2ECC71" Foreground="White" BorderThickness="0"/>
-            <Button Content="Đóng" Width="100" Height="30" Click="BtnClose_Click"/>
+            <Button Content="Xuất Word" Width="110" Style="{StaticResource WordButtonStyle}" Margin="0,0,10,0" Click="BtnExportWord_Click"/>
+            <Button Content="Lưu" Width="100" Style="{StaticResource SaveButtonStyle}" Margin="0,0,10,0" Click="BtnSave_Click"/>
+            <Button Content="Đóng" Width="100" Style="{StaticResource CloseButtonStyle}" Click="BtnClose_Click"/>
         </StackPanel>
     </Grid>
 </Window>

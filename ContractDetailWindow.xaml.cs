@@ -45,6 +45,7 @@ namespace QuanLyCongTacVien
                 var items = _hopDong.ChiTietHopDongs.Where(d => !d.IsDelete).ToList();
                 _chiTietItems = new ObservableCollection<ChiTietHopDong>(items);
                 dgChiTiet.ItemsSource = _chiTietItems;
+                UpdateTotalCount();
             }
         }
 
@@ -57,6 +58,7 @@ namespace QuanLyCongTacVien
                 TuNgay = DateTime.Now
             };
             _chiTietItems.Add(newItem);
+            UpdateTotalCount();
         }
 
         private void BtnDeleteRow_Click(object sender, RoutedEventArgs e)
@@ -83,6 +85,7 @@ namespace QuanLyCongTacVien
                             _hopDong.ChiTietHopDongs.Add(selected);
                         }
                     }
+                    UpdateTotalCount();
                 }
             }
             else
@@ -225,11 +228,20 @@ namespace QuanLyCongTacVien
                                 _chiTietItems.Add(newLine);
                             }
                             copiedCount = sourceLines.Count;
+                            UpdateTotalCount();
                         }
 
                         MessageBox.Show($"Đã sao chép thành công {copiedCount} dòng hợp đồng! Hãy nhấn nút 'Lưu' để lưu vào cơ sở dữ liệu.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
+            }
+        }
+
+        private void UpdateTotalCount()
+        {
+            if (txtTotalContracts != null)
+            {
+                txtTotalContracts.Text = $" {_chiTietItems?.Count ?? 0}";
             }
         }
     }
