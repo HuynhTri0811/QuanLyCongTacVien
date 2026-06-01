@@ -24,11 +24,11 @@ namespace QuanLyCongTacVien.Helpers
                 {
                     string filePath = saveFileDialog.FileName;
                     CreateWordDocument(filePath, item, parentInfo, ctv);
-                    MessageBox.Show("Xuất file Word thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CustomMessageBox.Show("Xuất file Word thành công!", "Thông báo", MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi xuất file Word: {ex.Message}\n\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageBox.Show($"Lỗi xuất file Word: {ex.Message}\n\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxImage.Error);
                 }
             }
         }

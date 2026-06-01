@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuanLyCongTacVien"
         mc:Ignorable="d"
-        Title="Quản lý Cộng tác viên" Height="680" Width="1180" WindowStartupLocation="CenterScreen">
+        Title="Quản lý Cộng tác viên" Height="680" Width="1180" WindowStartupLocation="CenterScreen"
+        Icon="Assets/logo.png">
     <Window.Resources>
         <!-- Reusable Modern Button Style -->
         <Style x:Key="ModernButton" TargetType="Button">
@@ -189,6 +190,71 @@
             </Setter>
         </Style>
 
+        <!-- Header Filter Button Style -->
+        <Style x:Key="HeaderFilterButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4" Padding="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#D0DFE5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Column Header with Filter Style -->
+        <Style x:Key="FilterDataGridColumnHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#EBF1F5"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,12,8,12"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#CFD8DC"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridColumnHeader">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <ContentPresenter Grid.Column="0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                   VerticalAlignment="Center"/>
+                                
+                                <!-- Filter Icon Button on the Right -->
+                                <Button Grid.Column="1" x:Name="btnFilter" Click="BtnFilterColumn_Click" Margin="4,0,0,0" Width="18" Height="18"
+                                        Style="{StaticResource HeaderFilterButtonStyle}"
+                                        Tag="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Path x:Name="filterPath" Data="M0,0 L6,0 L6,2 L4,5 L4,8 L2,8 L2,5 L0,2 Z" Fill="#8899A6" 
+                                          Width="8" Height="8" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger SourceName="btnFilter" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnFilter" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Modern DataGridCell Style (Vertically Centered) -->
         <Style TargetType="DataGridCell">
             <Setter Property="Background" Value="Transparent"/>
@@ -226,18 +292,24 @@
         <Border Grid.Column="0" Background="#EBF4F6" BorderBrush="#E0EBF0" BorderThickness="0,0,1,0" Padding="15,20,15,10">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/> <!-- App Logo/Illustration -->
+                    <RowDefinition Height="Auto"/> <!-- DANH MỤC Header -->
+                    <RowDefinition Height="*"/>    <!-- Navigation ListBox -->
                 </Grid.RowDefinitions>
-                
+
+                <!-- App Logo Image -->
+                <Border Grid.Row="0" Margin="5,0,5,20" CornerRadius="12" Padding="5">
+                    <Image Source="Assets/logo.png" Height="150" Width="150" Stretch="Uniform" HorizontalAlignment="Center"/>
+                </Border>
+
                 <!-- DANH MỤC Header -->
-                <StackPanel Orientation="Horizontal" Margin="5,0,0,25">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5,0,0,20">
                     <TextBlock Text="📁" FontSize="18" Foreground="#333333" VerticalAlignment="Center" Margin="0,0,8,0"/>
                     <TextBlock Text="DANH MỤC" FontSize="15" FontWeight="Bold" Foreground="#333333" VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Navigation ListBox -->
-                <ListBox Grid.Row="1" x:Name="lstNavigation" Background="Transparent" BorderThickness="0" 
+                <ListBox Grid.Row="2" x:Name="lstNavigation" Background="Transparent" BorderThickness="0" 
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          SelectionChanged="lstNavigation_SelectionChanged">
                     <ListBox.ItemContainerStyle>
@@ -372,15 +444,15 @@
                     <DataGrid Grid.Row="1" x:Name="dgCongTacVien" AutoGenerateColumns="False" IsReadOnly="True" 
                               SelectionMode="Single" MouseDoubleClick="dgCongTacVien_MouseDoubleClick"
                               RowStyle="{StaticResource ModernDataGridRow}"
-                              ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                              ColumnHeaderStyle="{StaticResource FilterDataGridColumnHeader}"
                               BorderThickness="1" BorderBrush="#EBF1F5" RowHeaderWidth="0" GridLinesVisibility="Horizontal" 
                               HorizontalGridLinesBrush="#E8ECEF" Background="White">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mã nhân sự" Binding="{Binding MaNhanSu}" Width="95"/>
-                            <DataGridTextColumn Header="Mã nhân viên" Binding="{Binding MaNhanVien}" Width="95"/>
+                            <DataGridTextColumn Header="Mã nhân sự" Binding="{Binding MaNhanSu}" SortMemberPath="MaNhanSu" Width="95"/>
+                            <DataGridTextColumn Header="Mã nhân viên" Binding="{Binding MaNhanVien}" SortMemberPath="MaNhanVien" Width="95"/>
                             
                             <!-- Custom Template for Name with Avatar -->
-                            <DataGridTemplateColumn Header="Họ và Tên" Width="200">
+                            <DataGridTemplateColumn Header="Họ và Tên" SortMemberPath="HoVaTen" Width="200">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5,2">
@@ -423,11 +495,11 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="Tên gọi khác" Binding="{Binding TenGoiKhac}" Width="100"/>
-                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding NgaySinh, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
-                            <DataGridTextColumn Header="Nơi sinh" Binding="{Binding NoiSinh}" Width="110"/>
-                            <DataGridTextColumn Header="Giới tính" Binding="{Binding GioiTinh}" Width="80"/>
-                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TinhTrang}" Width="*"/>
+                            <DataGridTextColumn Header="Tên gọi khác" Binding="{Binding TenGoiKhac}" SortMemberPath="TenGoiKhac" Width="100"/>
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding NgaySinh, StringFormat=\{0:dd/MM/yyyy\}}" SortMemberPath="NgaySinh" Width="100"/>
+                            <DataGridTextColumn Header="Nơi sinh" Binding="{Binding NoiSinh}" SortMemberPath="NoiSinh" Width="110"/>
+                            <DataGridTextColumn Header="Giới tính" Binding="{Binding GioiTinh}" SortMemberPath="GioiTinh" Width="80"/>
+                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TinhTrang}" SortMemberPath="TinhTrang" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -456,18 +528,80 @@
                     <DataGrid Grid.Row="2" x:Name="dgHopDong" AutoGenerateColumns="False" IsReadOnly="True" 
                               MouseDoubleClick="dgHopDong_MouseDoubleClick"
                               RowStyle="{StaticResource ModernDataGridRow}"
-                              ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeader}"
+                              ColumnHeaderStyle="{StaticResource FilterDataGridColumnHeader}"
                               BorderThickness="1" BorderBrush="#EBF1F5" RowHeaderWidth="0" GridLinesVisibility="Horizontal" 
                               HorizontalGridLinesBrush="#E8ECEF" Background="White">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Niên độ tài chính" Binding="{Binding NienDoTaiChinh}" Width="*"/>
-                            <DataGridTextColumn Header="Năm học" Binding="{Binding NamHoc}" Width="*"/>
-                            <DataGridTextColumn Header="Trường/Công ty" Binding="{Binding TruongCongTy}" Width="*"/>
-                            <DataGridTextColumn Header="Số thứ tự" Binding="{Binding STT}" Width="100"/>
+                            <DataGridTextColumn Header="Niên độ tài chính" Binding="{Binding NienDoTaiChinh}" SortMemberPath="NienDoTaiChinh" Width="*"/>
+                            <DataGridTextColumn Header="Năm học" Binding="{Binding NamHoc}" SortMemberPath="NamHoc" Width="*"/>
+                            <DataGridTextColumn Header="Trường/Công ty" Binding="{Binding TruongCongTy}" SortMemberPath="TruongCongTy" Width="*"/>
+                            <DataGridTextColumn Header="Số thứ tự" Binding="{Binding STT}" SortMemberPath="STT" Width="100"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </Grid>
         </Grid>
+        
+        <!-- Excel-like Column Filter Popup -->
+        <Popup x:Name="FilterPopup" StaysOpen="False" Placement="Bottom" PopupAnimation="Fade" AllowsTransparency="True">
+            <Border Background="White" BorderBrush="#D6E0E6" BorderThickness="1" CornerRadius="8" Width="220" Padding="10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="#000000" Opacity="0.1" ShadowDepth="2"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Search Box -->
+                        <RowDefinition Height="150"/>  <!-- List of Checkboxes -->
+                        <RowDefinition Height="Auto"/> <!-- Action Buttons -->
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Search Box inside Popup -->
+                    <TextBox Grid.Row="0" x:Name="txtPopupSearch" Margin="0,0,0,8" Height="28" Padding="5,2"
+                             FontSize="12" BorderBrush="#D6E0E6" BorderThickness="1" GotFocus="txtPopupSearch_GotFocus"
+                             TextChanged="txtPopupSearch_TextChanged"/>
+                    
+                    <!-- Values ListBox -->
+                    <ListBox Grid.Row="1" x:Name="lstFilterValues" BorderBrush="#E0E6ED" BorderThickness="1" Margin="0,0,0,10"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border Background="{TemplateBinding Background}" Padding="4,2">
+                                                <ContentPresenter/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" 
+                                          Content="{Binding ValueText}" 
+                                          Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"
+                                          VerticalContentAlignment="Center" Margin="2"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    
+                    <!-- Action Buttons -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Xóa lọc" Click="BtnClearColumnFilter_Click" Height="26" Margin="0,0,4,0"
+                                Style="{StaticResource ModernButton}" Background="#F1F5F9" Foreground="#475569" BorderThickness="0" FontSize="11"/>
+                        <Button Grid.Column="1" Content="Đồng ý" Click="BtnApplyColumnFilter_Click" Height="26" Margin="4,0,0,0"
+                                Style="{StaticResource ModernButton}" Background="#0F62AC" Foreground="White" BorderThickness="0" FontSize="11"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

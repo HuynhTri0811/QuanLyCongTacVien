@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using ClosedXML.Excel;
 using Microsoft.Win32;
+using System.Windows;
 
 namespace QuanLyCongTacVien.Helpers
 {
@@ -58,7 +59,7 @@ namespace QuanLyCongTacVien.Helpers
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
 
-                System.Windows.MessageBox.Show("Xuất Excel thành công!", "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                CustomMessageBox.Show("Xuất Excel thành công!", "Thông báo", MessageBoxImage.Information);
             }
         }
     }

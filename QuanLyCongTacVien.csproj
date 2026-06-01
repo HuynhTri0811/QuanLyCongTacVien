@@ -27,4 +27,7 @@
     <None Remove="scratch_test\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Assets\logo.png" />
+  </ItemGroup>
 </Project>
